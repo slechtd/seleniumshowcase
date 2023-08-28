@@ -14,6 +14,7 @@ public class PropertiesReader {
             FileInputStream data = new FileInputStream(baseDir + "/src/main/resources/configs/config.properties");
             properties.load(data);
         } catch (IOException e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
     }

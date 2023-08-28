@@ -3,11 +3,9 @@ package baseClasses;
 import org.openqa.selenium.WebDriver;
 import utils.WebDriverFactory;
 
-import java.io.IOException;
-
 public class BasePageObject {
 
-    protected static WebDriver getDriver() throws IOException {
+    protected static WebDriver getDriver() {
         return WebDriverFactory.getDriver();
     }
 }

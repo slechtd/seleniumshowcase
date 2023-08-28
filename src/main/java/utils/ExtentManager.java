@@ -5,7 +5,6 @@ import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,11 +12,11 @@ public class ExtentManager {
 
     public static ExtentReports extentReport;
     public static String extentReportPrefix;
-    public static ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
+    public static final ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
 
     private static final String baseDir = System.getProperty("user.dir");
 
-    public ExtentManager() throws IOException {
+    public ExtentManager() {
         super();
     }
 

@@ -5,8 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import java.io.IOException;
-
 public class LoginPageObject extends BasePageObject {
 
     private final WebDriver driver = getDriver();
@@ -23,7 +21,7 @@ public class LoginPageObject extends BasePageObject {
 
     //CONSTRUCTOR
 
-    public LoginPageObject() throws IOException {
+    public LoginPageObject() {
     }
 
     //ELEMENT GETTERS - used when an element needs to be accessed within a TestCase, such as when calling waitForElementVisible().

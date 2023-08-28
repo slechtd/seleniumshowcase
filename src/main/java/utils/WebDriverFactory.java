@@ -11,7 +11,7 @@ public class WebDriverFactory {
 
     private static final String baseDir = System.getProperty("user.dir");
 
-    public static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    public static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     public static WebDriver getDriver() {
         if (driver.get() == null) {
@@ -26,7 +26,7 @@ public class WebDriverFactory {
     }
 
     private static WebDriver createDriver() {
-        WebDriver driver = null;
+        WebDriver driver;
         String browser = PropertiesReader.getBrowser();
 
         driver = switch (browser) {

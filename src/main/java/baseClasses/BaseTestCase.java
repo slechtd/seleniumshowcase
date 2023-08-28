@@ -12,7 +12,6 @@ import org.testng.annotations.BeforeTest;
 import utils.EnvironmentManager;
 import utils.WebDriverFactory;
 
-import java.io.IOException;
 import java.time.Duration;
 
 public class BaseTestCase {
@@ -31,15 +30,15 @@ public class BaseTestCase {
 
     //SHARED TESTCASE METHODS
 
-    public static void waitForElementVisible(WebElement element, int seconds) throws IOException {
+    public static void waitForElementVisible(WebElement element, int seconds) {
         wait(seconds).until(ExpectedConditions.visibilityOf(element));
     }
 
-    public static void waitForElementInvisible(WebElement element, int seconds) throws IOException {
+    public static void waitForElementInvisible(WebElement element, int seconds) {
         wait(seconds).until(ExpectedConditions.invisibilityOf(element));
     }
 
-    public static void scrollToElement(WebElement element) throws IOException {
+    public static void scrollToElement(WebElement element) {
         ((JavascriptExecutor) getDriver()).executeScript("arguments[0].scrollIntoView(true);", element);
     }
 
@@ -50,14 +49,12 @@ public class BaseTestCase {
             wait.until(pageLoadCondition);
         } catch (TimeoutException e) {
             throw new RuntimeException("Page did not load within " + seconds + " seconds.");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
     //PRIVATE METHODS
 
-    private static WebDriverWait wait(int seconds) throws IOException {
+    private static WebDriverWait wait(int seconds) {
         return new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
     }
 
@@ -65,7 +62,7 @@ public class BaseTestCase {
         return driver -> ((JavascriptExecutor) driver).executeScript("return document.readyState").equals("complete");
     }
 
-    private static WebDriver getDriver() throws IOException {
+    private static WebDriver getDriver() {
         return WebDriverFactory.getDriver();
     }
 

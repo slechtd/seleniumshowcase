@@ -18,7 +18,7 @@ public class ScreenshotManager {
 
     public static String screenShotDestinationPath;
 
-    public static String takeSnapShot(String name) throws IOException {
+    public static void takeSnapShot() {
         File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         String destFile = baseDir + "/out/screenshots/" + timestamp() + ".png";
         screenShotDestinationPath = destFile;
@@ -26,9 +26,9 @@ public class ScreenshotManager {
         try {
             FileUtils.copyFile(srcFile, new File(destFile));
         } catch (IOException e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
-        return name;
     }
 
     private static String timestamp() {

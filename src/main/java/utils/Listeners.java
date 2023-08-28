@@ -1,14 +1,12 @@
 package utils;
 
-import java.io.IOException;
-
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 public class Listeners implements ITestListener {
 
-    public Listeners() throws IOException {
+    public Listeners() {
         super();
     }
 
@@ -21,9 +19,10 @@ public class Listeners implements ITestListener {
         ExtentManager.getTest().fail(result.getThrowable());
         try {
             System.out.println("Test failed: " + result.getName());
-            ScreenshotManager.takeSnapShot(result.getMethod().getMethodName());
+            ScreenshotManager.takeSnapShot();
             ExtentManager.attachImage();
         } catch (Exception e) {
+            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
     }
