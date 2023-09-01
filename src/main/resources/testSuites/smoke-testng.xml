@@ -3,7 +3,7 @@
 <suite name="Suite" parallel="tests" thread-count="2">
     <test thread-count="5" name="Test">
         <classes>
-            <class name="testCases.InvalidLoginTestCase"/>
+            <class name="testCases.ValidLoginAndLogoutTestCase"/>
         </classes>
     </test>
 </suite>

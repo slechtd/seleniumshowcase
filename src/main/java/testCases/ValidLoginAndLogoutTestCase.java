@@ -1,12 +1,12 @@
 package testCases;
 
 import baseClasses.BaseTestCase;
-import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
+import pageObjects.LogoutPageObject;
 import pageObjects.MyAccountPageObject;
 import utils.ExtentManager;
 import utils.TestDataManager;
@@ -14,7 +14,7 @@ import utils.TestDataManager;
 import java.io.IOException;
 
 @Listeners(utils.Listeners.class)
-public class ValidLoginTestCase extends BaseTestCase {
+public class ValidLoginAndLogoutTestCase extends BaseTestCase {
 
     @Test
     public void login() throws IOException {
@@ -45,20 +45,23 @@ public class ValidLoginTestCase extends BaseTestCase {
 
         MyAccountPageObject myAccountPage = new MyAccountPageObject();
         waitForPageToBeLoaded(10);
+        Assert.assertTrue(myAccountPage.getMyAccountHeaderElement().isDisplayed());
         ExtentManager.log("MyAccountPage loaded successfully.");
 
-        String failureMessage = "Header element not found on MyAccountPage";
+        hoverOverElement(myAccountPage.getWelcomeBackElement());
+        waitForElementVisible(myAccountPage.getDropdownMenuItems().get(0), 10);
+        ExtentManager.log("DropDown menu is visible.");
 
-        try {
-            if (myAccountPage.getMyAccountHeaderElement().isDisplayed()) {
-                ExtentManager.pass("Successfully logged-in");
-            } else {
-                Assert.fail(failureMessage);
-                ExtentManager.fail(failureMessage);
-            }
-        } catch (NoSuchElementException e) {
-            Assert.fail(failureMessage);
-            ExtentManager.fail(failureMessage);
-        }
+        myAccountPage.logOut();
+        ExtentManager.log("Logout button clicked successfully.");
+
+        LogoutPageObject logoutPage = new LogoutPageObject();
+        waitForPageToBeLoaded(10);
+        ExtentManager.log("LogoutPage loaded successfully.");
+
+        String actualHeaderText = logoutPage.getLogoutHeaderElement().getText();
+        String expectedHeaderText = "ACCOUNT LOGOUT";
+        Assert.assertEquals(actualHeaderText, expectedHeaderText, "The logout header text did not match.");
+        ExtentManager.pass("Logout successful.");
     }
 }

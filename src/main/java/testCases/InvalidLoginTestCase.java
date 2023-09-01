@@ -42,18 +42,7 @@ public class InvalidLoginTestCase extends BaseTestCase {
         loginPage.clickLoginButton();
         ExtentManager.log("Login button clicked successfully.");
 
-        String failureMessage = "Alert element not found / invisible.";
-
-        try {
-            if (loginPage.getAlertElement().isDisplayed()) {
-                ExtentManager.pass("The alert is visible as expected.");
-            } else {
-                Assert.fail(failureMessage);
-                ExtentManager.fail(failureMessage);
-            }
-        } catch (NoSuchElementException e) {
-            Assert.fail(failureMessage);
-            ExtentManager.fail(failureMessage);
-        }
+        Assert.assertTrue(loginPage.getAlertElement().isDisplayed(), "Alert element not visible");
+        ExtentManager.pass("Failed to log-in as expected.");
     }
 }

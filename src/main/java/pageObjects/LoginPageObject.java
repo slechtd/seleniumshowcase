@@ -19,11 +19,6 @@ public class LoginPageObject extends BasePageObject {
 
     private final By alert = By.cssSelector(".alert.alert-danger.alert-error");
 
-    //CONSTRUCTOR
-
-    public LoginPageObject() {
-    }
-
     //ELEMENT GETTERS - used when an element needs to be accessed within a TestCase, such as when calling waitForElementVisible().
 
     public WebElement getLoginFieldElement() {
