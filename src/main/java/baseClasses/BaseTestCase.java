@@ -4,6 +4,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -50,6 +51,11 @@ public class BaseTestCase {
         } catch (TimeoutException e) {
             throw new RuntimeException("Page did not load within " + seconds + " seconds.");
         }
+    }
+
+    public void hoverOverElement(WebElement elementToHover) {
+        Actions actions = new Actions(getDriver());
+        actions.moveToElement(elementToHover).perform();
     }
 
     //PRIVATE METHODS

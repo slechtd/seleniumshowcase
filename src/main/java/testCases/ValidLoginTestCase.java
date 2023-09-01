@@ -7,18 +7,19 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
+import pageObjects.MyAccountPageObject;
 import utils.ExtentManager;
 import utils.TestDataManager;
 
 import java.io.IOException;
 
 @Listeners(utils.Listeners.class)
-public class InvalidLoginTestCase extends BaseTestCase {
+public class ValidLoginTestCase extends BaseTestCase {
 
     @Test
     public void login() throws IOException {
 
-        String[][] credentials = TestDataManager.getInvalidCredentials();
+        String[][] credentials = TestDataManager.getValidCredentials();
 
         ExtentManager.log("Starting InvalidLoginTestCase.");
 
@@ -42,11 +43,15 @@ public class InvalidLoginTestCase extends BaseTestCase {
         loginPage.clickLoginButton();
         ExtentManager.log("Login button clicked successfully.");
 
-        String failureMessage = "Alert element not found / invisible.";
+        MyAccountPageObject myAccountPage = new MyAccountPageObject();
+        waitForPageToBeLoaded(10);
+        ExtentManager.log("MyAccountPage loaded successfully.");
+
+        String failureMessage = "Header element not found on MyAccountPage";
 
         try {
-            if (loginPage.getAlertElement().isDisplayed()) {
-                ExtentManager.pass("The alert is visible as expected.");
+            if (myAccountPage.getMyAccountHeaderElement().isDisplayed()) {
+                ExtentManager.pass("Successfully logged-in");
             } else {
                 Assert.fail(failureMessage);
                 ExtentManager.fail(failureMessage);
