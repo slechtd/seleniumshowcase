@@ -58,7 +58,7 @@ public class BaseTestCase {
         actions.moveToElement(elementToHover).perform();
     }
 
-    //PRIVATE METHODS
+    // PRIVATE METHODS
 
     private static WebDriverWait wait(int seconds) {
         return new WebDriverWait(getDriver(), Duration.ofSeconds(seconds));
@@ -71,5 +71,4 @@ public class BaseTestCase {
     private static WebDriver getDriver() {
         return WebDriverFactory.getDriver();
     }
-
 }
