@@ -2,7 +2,7 @@
 
 ### About
 
-This is my test automation portfolio project.
+This is a portfolio project meant to demonstrate my approach towards building a maintainable test automation framework. It is built on Java and utilizes Selenium WebDriver for browser automation and TestNG for test case management. The framework is designed to run against the sample website automationteststore.com, but it is not intended to provide exhaustive testing of the site. Instead, the focus is on showcasing a structured framework that follows the Page Object Model (POM) for reusability and maintainability. It supports data-driven testing (reading Excel spreadsheets), multi-environment testing, and includes utility classes for WebDriver and environment setup. Logging is handled through TestNG listeners, and Extent Reports provide test reporting.
 
 ### Prerequisites
 
