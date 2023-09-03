@@ -6,7 +6,6 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pageObjects.HomePageObject;
 import pageObjects.LoginPageObject;
-import utils.ExtentManager;
 import utils.TestDataManager;
 
 import java.io.IOException;
@@ -19,29 +18,29 @@ public class InvalidLoginTestCase extends BaseTestCase {
 
         String[][] credentials = TestDataManager.getInvalidCredentials();
 
-        ExtentManager.log("Starting InvalidLoginTestCase.");
+        log("Starting InvalidLoginTestCase.");
 
         HomePageObject homePage = new HomePageObject();
         waitForPageToBeLoaded(10);
-        ExtentManager.log("HomePage loaded successfully.");
+        log("HomePage loaded successfully.");
 
         homePage.clickLoginOrRegisterLink();
-        ExtentManager.log("loginOrRegisterLink clicked successfully.");
+        log("loginOrRegisterLink clicked successfully.");
 
         LoginPageObject loginPage = new LoginPageObject();
         waitForPageToBeLoaded(10);
-        ExtentManager.log("LoginPage loaded successfully.");
+        log("LoginPage loaded successfully.");
 
         loginPage.enterLogin(credentials[0][0]);
-        ExtentManager.log("Email entered successfully." + credentials[0][0]);
+        log("Login entered successfully: " + credentials[0][0]);
 
         loginPage.enterPassword(credentials[0][1]);
-        ExtentManager.log("Password entered successfully." + credentials[0][1]);
+        log("Password entered successfully: " + credentials[0][1]);
 
         loginPage.clickLoginButton();
-        ExtentManager.log("Login button clicked successfully.");
+        log("Login button clicked successfully.");
 
         Assert.assertTrue(loginPage.getAlertElement().isDisplayed(), "Alert element not visible");
-        ExtentManager.pass("Failed to log-in as expected.");
+        pass("Failed to log-in as expected.");
     }
 }

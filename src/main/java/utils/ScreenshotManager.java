@@ -18,7 +18,7 @@ public class ScreenshotManager {
 
     public static String screenShotDestinationPath;
 
-    public static void takeSnapShot() {
+    public static String takeSnapShot() {
         File srcFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         String destFile = baseDir + "/out/screenshots/" + timestamp() + ".png";
         screenShotDestinationPath = destFile;
@@ -26,10 +26,11 @@ public class ScreenshotManager {
         try {
             FileUtils.copyFile(srcFile, new File(destFile));
         } catch (IOException e) {
-            //noinspection CallToPrintStackTrace
             e.printStackTrace();
         }
+        return screenShotDestinationPath;  // Return the path of the screenshot.
     }
+
 
     private static String timestamp() {
         return new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(new Date());
@@ -38,5 +39,4 @@ public class ScreenshotManager {
     public static String getScreenShotDestinationPath() {
         return screenShotDestinationPath;
     }
-
 }

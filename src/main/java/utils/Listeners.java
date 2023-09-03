@@ -11,23 +11,17 @@ public class Listeners implements ITestListener {
     }
 
     public synchronized void onStart(ITestContext context) {
-        ExtentManager.getReport();
-        ExtentManager.createTest(context.getName(), context.getName());
+        MiniManager.setupMiniReporter();
     }
 
     public synchronized void onTestFailure(ITestResult result) {
-        ExtentManager.getTest().fail(result.getThrowable());
-        try {
-            System.out.println("Test failed: " + result.getName());
-            ScreenshotManager.takeSnapShot();
-            ExtentManager.attachImage();
-        } catch (Exception e) {
-            //noinspection CallToPrintStackTrace
-            e.printStackTrace();
-        }
+        String testCase = result.getTestClass().getRealClass().getSimpleName();
+        MiniLogger.fail(result.getThrowable(), testCase);
+        String screenshotPath = ScreenshotManager.takeSnapShot();
+        MiniLogger.addScreenshot(screenshotPath, testCase);
     }
 
     public synchronized void onFinish(ITestContext context) {
-        ExtentManager.flushReport();
+        MiniLogger.flushReport();
     }
 }

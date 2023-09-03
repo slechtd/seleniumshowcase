@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import utils.EnvironmentManager;
+import utils.MiniLogger;
 import utils.WebDriverFactory;
 
 import java.time.Duration;
@@ -30,6 +31,28 @@ public class BaseTestCase {
     }
 
     //SHARED TESTCASE METHODS
+
+    public void log(String message) {
+        String testCaseName = getClass().getSimpleName();
+        MiniLogger.log(message, testCaseName);
+    }
+
+    public void pass(String message) {
+        String testCaseName = getClass().getSimpleName();
+        MiniLogger.pass(message, testCaseName);
+    }
+
+    public void fail(String message) {
+        String testCaseName = getClass().getSimpleName();
+        MiniLogger.fail(message, testCaseName);
+    }
+
+    public void fail(Throwable throwable) {
+        String testCaseName = getClass().getSimpleName();
+        MiniLogger.fail(throwable, testCaseName);
+    }
+
+    // SHARED ELEMENT METHODS
 
     public static void waitForElementVisible(WebElement element, int seconds) {
         wait(seconds).until(ExpectedConditions.visibilityOf(element));
