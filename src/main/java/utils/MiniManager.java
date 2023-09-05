@@ -12,6 +12,7 @@ public class MiniManager {
         MiniLogger.setReportFilePath(baseDir + "/out/reports");
         MiniLogger.setInfo("Environment", PropertiesReader.getEnvironment());
         MiniLogger.setInfo("Browser", PropertiesReader.getBrowser());
+        MiniLogger.setInfo("Headless", String.valueOf(PropertiesReader.isHeadless()));
         MiniLogger.setInfo("Date", createDate());
     }
 

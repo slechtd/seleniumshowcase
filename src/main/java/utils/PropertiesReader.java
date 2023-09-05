@@ -26,5 +26,4 @@ public class PropertiesReader {
         String headlessValue = System.getProperty("headless");
         return "true".equalsIgnoreCase(headlessValue);
     }
-
 }
