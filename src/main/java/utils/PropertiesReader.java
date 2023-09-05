@@ -17,4 +17,8 @@ public class PropertiesReader {
     public static String getUserDir() {
         return System.getProperty("user.dir");
     }
+
+    public static String getOsName() {
+        return System.getProperty("os.name").toLowerCase();
+    }
 }

@@ -32,15 +32,15 @@ public class WebDriverFactory {
 
         driver = switch (browser) {
             case "chrome" -> {
-                System.setProperty("webdriver.chrome.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "chromedriver");
+                System.setProperty("webdriver.chrome.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "chromedriver" + getOsFilename());
                 yield new ChromeDriver();
             }
             case "firefox" -> {
-                System.setProperty("webdriver.gecko.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "geckodriver");
+                System.setProperty("webdriver.gecko.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "geckodriver" + getOsFilename());
                 yield new FirefoxDriver();
             }
             case "edge" -> {
-                System.setProperty("webdriver.edge.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "msedgedriver.exe");
+                System.setProperty("webdriver.edge.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "msedgedriver" + getOsFilename());
                 yield new EdgeDriver();
             }
             default ->
@@ -49,5 +49,9 @@ public class WebDriverFactory {
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         return driver;
+    }
+
+    private static String getOsFilename() {
+        return PropertiesReader.getOsName().contains("win") ? ".exe" : "";
     }
 }
