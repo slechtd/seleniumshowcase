@@ -16,6 +16,7 @@
     <!-- Default values for browser, environment, suiteXmlFile, and os -->
     <browser>chrome</browser>
     <environment>DEV</environment>
+    <headless>false</headless>
     <suiteXmlFile>src/main/resources/testSuites/smoke-testng.xml</suiteXmlFile>
 </properties>
 
@@ -76,6 +77,7 @@
                 <systemPropertyVariables>
                     <browser>${browser}</browser>
                     <environment>${environment}</environment>
+                    <headless>${headless}</headless>
                 </systemPropertyVariables>
                 <testSourceDirectory>src/main/java</testSourceDirectory>
             </configuration>

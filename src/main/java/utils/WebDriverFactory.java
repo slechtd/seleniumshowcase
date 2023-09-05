@@ -2,8 +2,11 @@ package utils;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import java.time.Duration;
 
@@ -33,15 +36,15 @@ public class WebDriverFactory {
         driver = switch (browser) {
             case "chrome" -> {
                 System.setProperty("webdriver.chrome.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "chromedriver" + getOsFilename());
-                yield new ChromeDriver();
+                yield new ChromeDriver(getChromeOptions());
             }
             case "firefox" -> {
                 System.setProperty("webdriver.gecko.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "geckodriver" + getOsFilename());
-                yield new FirefoxDriver();
+                yield new FirefoxDriver(getFirefoxOptions());
             }
             case "edge" -> {
                 System.setProperty("webdriver.edge.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "msedgedriver" + getOsFilename());
-                yield new EdgeDriver();
+                yield new EdgeDriver(getEdgeOptions());
             }
             default ->
                     throw new IllegalArgumentException("Invalid driver value found in config.properties: " + browser);
@@ -53,5 +56,23 @@ public class WebDriverFactory {
 
     private static String getOsFilename() {
         return PropertiesReader.getOsName().contains("win") ? ".exe" : "";
+    }
+
+    private static ChromeOptions getChromeOptions() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments(PropertiesReader.isHeadless() ? "--headless" : "--headed");
+        return options;
+    }
+
+    private static FirefoxOptions getFirefoxOptions() {
+        FirefoxOptions options = new FirefoxOptions();
+        options.addArguments(PropertiesReader.isHeadless() ? "--headless" : "--headed");
+        return options;
+    }
+
+    private static EdgeOptions getEdgeOptions() {
+        EdgeOptions options = new EdgeOptions();
+        options.addArguments(PropertiesReader.isHeadless() ? "--headless" : "--headed");
+        return options;
     }
 }

@@ -21,4 +21,10 @@ public class PropertiesReader {
     public static String getOsName() {
         return System.getProperty("os.name").toLowerCase();
     }
+
+    public static boolean isHeadless() {
+        String headlessValue = System.getProperty("headless");
+        return "true".equalsIgnoreCase(headlessValue);
+    }
+
 }
