@@ -40,7 +40,7 @@ public class WebDriverFactory {
                 yield new FirefoxDriver();
             }
             case "edge" -> {
-                System.setProperty("webdriver.edge.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "msedgedriver");
+                System.setProperty("webdriver.edge.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "msedgedriver.exe");
                 yield new EdgeDriver();
             }
             default ->
