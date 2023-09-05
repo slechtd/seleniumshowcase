@@ -9,7 +9,8 @@ import java.time.Duration;
 
 public class WebDriverFactory {
 
-    private static final String baseDir = System.getProperty("user.dir");
+    private static final String baseDir = PropertiesReader.getUserDir();
+    private static final String fileSeparator = PropertiesReader.getFileSeparator();
 
     public static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
@@ -31,15 +32,15 @@ public class WebDriverFactory {
 
         driver = switch (browser) {
             case "chrome" -> {
-                System.setProperty("webdriver.chrome.driver", baseDir + "/src/main/resources/drivers/chromedriver");
+                System.setProperty("webdriver.chrome.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "chromedriver");
                 yield new ChromeDriver();
             }
             case "firefox" -> {
-                System.setProperty("webdriver.gecko.driver", baseDir + "/src/main/resources/drivers/geckodriver");
+                System.setProperty("webdriver.gecko.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "geckodriver");
                 yield new FirefoxDriver();
             }
             case "edge" -> {
-                System.setProperty("webdriver.edge.driver", baseDir + "/src/main/resources/drivers/msedgedriver");
+                System.setProperty("webdriver.edge.driver", baseDir + fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "drivers" + fileSeparator + "msedgedriver");
                 yield new EdgeDriver();
             }
             default ->

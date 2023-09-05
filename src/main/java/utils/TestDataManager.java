@@ -10,17 +10,18 @@ import java.io.IOException;
 
 public class TestDataManager {
 
-    private static final String baseDir = System.getProperty("user.dir");
+    private static final String baseDir = PropertiesReader.getUserDir();
+    private static final String fileSeparator = PropertiesReader.getFileSeparator();
 
     public static String[][] getValidCredentials() throws IOException {
-        return getCredentials("/src/main/resources/testData/validLoginCredentials.xlsx");
+        return getCredentials(fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "testData" + fileSeparator + "validLoginCredentials.xlsx");
     }
 
     public static String[][] getInvalidCredentials() throws IOException {
-        return getCredentials("/src/main/resources/testData/invalidLoginCredentials.xlsx");
+        return getCredentials(fileSeparator + "src" + fileSeparator + "main" + fileSeparator + "resources" + fileSeparator + "testData" + fileSeparator + "invalidLoginCredentials.xlsx");
     }
 
-    //PRIVATE METHODS
+    // PRIVATE METHODS
 
     private static String[][] getCredentials(String filePath) throws IOException {
         FileInputStream workbookLocation = new FileInputStream(baseDir + filePath);

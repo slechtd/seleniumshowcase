@@ -13,7 +13,7 @@
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <!-- Default values for browser, environment, and suiteXmlFile -->
+    <!-- Default values for browser, environment, suiteXmlFile, and os -->
     <browser>chrome</browser>
     <environment>DEV</environment>
     <suiteXmlFile>src/main/resources/testSuites/smoke-testng.xml</suiteXmlFile>
@@ -84,4 +84,5 @@
 </build>
 
 </project>
+
 
