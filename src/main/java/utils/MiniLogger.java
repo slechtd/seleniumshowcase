@@ -1,94 +1,89 @@
 package utils;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import java.io.FileWriter;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.UUID;
 
 public class MiniLogger {
-    private static String reportFileName;
-    private static String reportFilePath;
-    private static final ArrayList<Map<String, String>> info = new ArrayList<>();
-    private static final Map<String, ArrayList<Map<String, String>>> logData = new HashMap<>();
-    private static final Map<String, ArrayList<String>> screenshotPaths = new HashMap<>();
-    private static final Map<String, String> testStatuses = new HashMap<>();
 
-    public static void setReportFileName(String fileName) {
-        reportFileName = fileName;
+    private static final Connection connection;
+    private static final String executionId;
+    private static final String browser;
+    private static final String environment;
+    private static final boolean headless;
+    private static final String testSuite;
+    private static String screenshotPath;
+
+    static {
+        String dbHost = PropertiesReader.getDbHost();
+        String dbUser = PropertiesReader.getDbUser();
+        String dbPassword = PropertiesReader.getDbPassword();
+
+        executionId = UUID.randomUUID().toString();
+        testSuite = PropertiesReader.getTestSuite();
+        browser = PropertiesReader.getBrowser();
+        environment = PropertiesReader.getEnvironment();
+        headless = PropertiesReader.isHeadless();
+
+        try {
+            connection = DriverManager.getConnection(dbHost, dbUser, dbPassword);
+            initializeExecution();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to connect to database.");
+        }
     }
 
-    public static void setReportFilePath(String filePath) {
-        reportFilePath = filePath;
+    // Initialize the execution entry in the database
+    private static void initializeExecution() throws SQLException {
+        String sql = "INSERT INTO executions (test_suite, execution_id, browser, environment, headless) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, testSuite);
+            preparedStatement.setString(2, executionId);
+            preparedStatement.setString(3, browser);
+            preparedStatement.setString(4, environment);
+            preparedStatement.setBoolean(5, headless);
+            preparedStatement.executeUpdate();
+        }
     }
 
-    public static void setInfo(String key, String value) {
-        Map<String, String> infoMap = new HashMap<>();
-        infoMap.put(key, value);
-        info.add(infoMap);
+    public static void addScreenshot(String path, String testCaseName) {
+        screenshotPath = path;
     }
 
     public static void log(String message, String testCaseName) {
-        addLogEntry(message, testCaseName);
+        addLogEntry(message, testCaseName, "INFO");
     }
 
     public static void pass(String message, String testCaseName) {
-        addLogEntry("TEST PASSED: " + message, testCaseName);
-        testStatuses.put(testCaseName, "PASSED");
+        addLogEntry("TEST PASSED: " + message, testCaseName, "PASS");
     }
 
     public static void fail(String message, String testCaseName) {
-        addLogEntry("TEST FAILED: " + message, testCaseName);
-        testStatuses.put(testCaseName, "FAILED");
+        addLogEntry("TEST FAILED: " + message, testCaseName, "FAIL");
     }
 
     public static void fail(Throwable throwable, String testCaseName) {
         String exceptionMessage = throwable.toString();
-        addLogEntry("TEST FAILED: " + exceptionMessage, testCaseName);
-        testStatuses.put(testCaseName, "FAILED");
+        addLogEntry("TEST FAILED: " + exceptionMessage, testCaseName, "FAIL");
     }
 
-    public static void addScreenshot(String filePath, String testCaseName) {
-        screenshotPaths.computeIfAbsent(testCaseName, k -> new ArrayList<>()).add(filePath);
-    }
-
-    private static void addLogEntry(String message, String testCaseName) {
-        Map<String, String> logEntry = new HashMap<>();
-        logEntry.put("timestamp", createTimestamp());
-        logEntry.put("message", message);
-        logData.computeIfAbsent(testCaseName, k -> new ArrayList<>()).add(logEntry);
-    }
-
-    public static void flushReport() {
-        Map<String, Object> finalReport = prepareFinalReport();
-        writeReportToFile(finalReport);
-    }
-
-    private static Map<String, Object> prepareFinalReport() {
-        Map<String, Object> finalReport = new LinkedHashMap<>();
-        finalReport.put("info", info);
-
-        List<Map<String, Object>> testCasesList = new ArrayList<>();
-        for (String key : testStatuses.keySet()) {
-            Map<String, Object> testCase = new LinkedHashMap<>();
-            testCase.put("name", key);
-            testCase.put("status", testStatuses.get(key));
-            testCase.put("screenshotPaths", screenshotPaths.getOrDefault(key, new ArrayList<>()));
-            testCase.put("logs", logData.getOrDefault(key, new ArrayList<>()));
-            testCasesList.add(testCase);
-        }
-
-        finalReport.put("testCases", testCasesList);
-        return finalReport;
-    }
-
-    private static void writeReportToFile(Map<String, Object> finalReport) {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter(reportFilePath + "/" + reportFileName)) {
-            gson.toJson(finalReport, writer);
-        } catch (IOException e) {
+    private static void addLogEntry(String message, String testCaseName, String logType) {
+        String timestamp = createTimestamp();
+        String sql = "INSERT INTO test_logs (execution_id, test_case_name, message, log_type, timestamp, screenshot_path) VALUES (?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            preparedStatement.setString(1, executionId);
+            preparedStatement.setString(2, testCaseName);
+            preparedStatement.setString(3, message);
+            preparedStatement.setString(4, logType);
+            preparedStatement.setString(5, timestamp);
+            preparedStatement.setString(6, screenshotPath);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

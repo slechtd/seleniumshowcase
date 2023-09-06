@@ -12,12 +12,15 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
     <!-- Default values for browser, environment, suiteXmlFile, and os -->
     <browser>chrome</browser>
     <environment>DEV</environment>
     <headless>false</headless>
     <suiteXmlFile>src/main/resources/testSuites/smoke-testng.xml</suiteXmlFile>
+    <!-- DB Properties -->
+    <dbHost>placeholder</dbHost>
+    <dbUser>placeholder</dbUser>
+    <dbPassword>placeholder</dbPassword>
 </properties>
 
 <dependencies>
@@ -78,6 +81,9 @@
                     <browser>${browser}</browser>
                     <environment>${environment}</environment>
                     <headless>${headless}</headless>
+                    <dbHost>${dbHost}</dbHost>
+                    <dbUser>${dbUser}</dbUser>
+                    <dbPassword>${dbPassword}</dbPassword>
                 </systemPropertyVariables>
                 <testSourceDirectory>src/main/java</testSourceDirectory>
             </configuration>

@@ -11,7 +11,7 @@ public class Listeners implements ITestListener {
     }
 
     public synchronized void onStart(ITestContext context) {
-        MiniManager.setupMiniReporter();
+
     }
 
     public synchronized void onTestFailure(ITestResult result) {
@@ -22,6 +22,6 @@ public class Listeners implements ITestListener {
     }
 
     public synchronized void onFinish(ITestContext context) {
-        MiniLogger.flushReport();
+
     }
 }
