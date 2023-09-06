@@ -26,6 +26,8 @@ public class MiniLogger {
         }
     }
 
+    // PUBLIC METHODS
+
     public static void log(String message, String testCaseName) {
         if (shouldLogToDB) {
             addLogEntry(message, testCaseName, info);
@@ -55,6 +57,8 @@ public class MiniLogger {
         executePreparedStatement(sql, executionId, testCaseName, path);
     }
 
+    // PRIVATE METHODS
+
     private static void addLogEntry(String message, String testCaseName, String logType) {
         String sql = "INSERT INTO test_logs (execution_id, test_case_name, message, log_type, timestamp) VALUES (?, ?, ?, ?, ?)";
         executePreparedStatement(sql, executionId, testCaseName, message, logType, createTimestamp());
@@ -65,45 +69,58 @@ public class MiniLogger {
         executePreparedStatement(sql, executionId, testSuite, browser, environment, headless);
     }
 
-    //ORIGINAL:
-    /*private static void executePreparedStatement(String sql, Object... params) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            for (int i = 0; i < params.length; i++) {
-                preparedStatement.setObject(i + 1, params[i]);
-            }
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-    //DEBUG:
     private static void executePreparedStatement(String sql, Object... params) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            for (int i = 0; i < params.length; i++) {
-                preparedStatement.setObject(i + 1, params[i]);
-            }
-            System.out.println("Executing SQL: " + preparedStatement.toString()); // Debugging line
-            int rowsAffected = preparedStatement.executeUpdate();
-            System.out.println("Rows affected: " + rowsAffected);  // Debugging line
-            if (rowsAffected == 0) {
-                System.err.println("No rows affected, insert failed.");
-            }
+        try (PreparedStatement preparedStatement = prepareStatementWithParams(sql, params)) {
+            debugExecutingSQL(preparedStatement);
+            int rowsAffected = executeSQL(preparedStatement);
+            debugRowsAffected(rowsAffected);
+            checkRowsAffected(rowsAffected);
         } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("SQLException occurred: " + e.getMessage());
+            handleSQLException(e);
         }
+    }
+
+    private static PreparedStatement prepareStatementWithParams(String sql, Object... params) throws SQLException {
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        for (int i = 0; i < params.length; i++) {
+            preparedStatement.setObject(i + 1, params[i]);
+        }
+        return preparedStatement;
     }
 
     private static String createTimestamp() {
         return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
     }
+
+    // DEBUG METHODS
+
+    private static void debugExecutingSQL(PreparedStatement preparedStatement) {
+        System.out.println("Executing SQL: " + preparedStatement.toString());
+    }
+
+    private static int executeSQL(PreparedStatement preparedStatement) throws SQLException {
+        return preparedStatement.executeUpdate();
+    }
+
+    private static void debugRowsAffected(int rowsAffected) {
+        System.out.println("Rows affected: " + rowsAffected);
+    }
+
+    private static void checkRowsAffected(int rowsAffected) {
+        if (rowsAffected == 0) {
+            System.err.println("No rows affected, insert failed.");
+        }
+    }
+
+    private static void handleSQLException(SQLException e) {
+        e.printStackTrace();
+        System.err.println("SQLException occurred: " + e.getMessage());
+    }
 }
 
-/*
-Database Schema for MiniLogger
+// TARGET DB SCHEMA
 
--- Table: executions
+/*
 CREATE TABLE executions (
     execution_id VARCHAR(255) PRIMARY KEY,
     test_suite VARCHAR(255),
@@ -112,7 +129,6 @@ CREATE TABLE executions (
     headless BOOLEAN
 );
 
--- Table: screenshot_paths
 CREATE TABLE screenshot_paths (
     id SERIAL PRIMARY KEY,
     execution_id VARCHAR(255),
@@ -121,7 +137,6 @@ CREATE TABLE screenshot_paths (
     FOREIGN KEY (execution_id) REFERENCES executions(execution_id)
 );
 
--- Table: test_logs
 CREATE TABLE test_logs (
     id SERIAL PRIMARY KEY,
     execution_id VARCHAR(255),
