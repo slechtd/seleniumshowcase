@@ -23,6 +23,7 @@ public class MiniLogger {
         if (shouldLogToDB) {
             connection = DatabaseConnector.getConnection();
             initializeExecution();
+            addLogEntry("XXX", "XXX", info);
         }
     }
 
