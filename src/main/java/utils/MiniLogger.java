@@ -1,7 +1,6 @@
 package utils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -22,61 +21,9 @@ public class MiniLogger {
 
     static {
         if (shouldLogToDB) {
-
-            System.out.println(PropertiesReader.getDbHost());
-            System.out.println(PropertiesReader.getDbUser());
-            System.out.println(PropertiesReader.getDbPassword());
-
-            initializeDatabaseConnection();
-        }
-    }
-
-    private static void initializeDatabaseConnection() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("MySQL JDBC Driver not found.", e);
-        }
-
-        String dbHost = PropertiesReader.getDbHost();
-        String dbUser = PropertiesReader.getDbUser();
-        String dbPassword = PropertiesReader.getDbPassword();
-
-        try {
-            connection = DriverManager.getConnection(dbHost, dbUser, dbPassword);
+            connection = DatabaseConnector.getConnection();
             initializeExecution();
-        } catch (SQLException e) {
-            System.err.println("SQL State: " + e.getSQLState());
-            System.err.println("Error Code: " + e.getErrorCode());
-            System.err.println("Message: " + e.getMessage());
-            Throwable t = e.getCause();
-            while(t != null) {
-                System.err.println("Cause: " + t);
-                t = t.getCause();
-            }
-            throw new RuntimeException("Failed to connect to database.");
         }
-    }
-
-    private static void initializeExecution() {
-        String sql = "INSERT INTO executions (execution_id, test_suite, browser, environment, headless) VALUES (?, ?, ?, ?, ?)";
-        executePreparedStatement(sql, executionId, testSuite, browser, environment, headless);
-    }
-
-    private static void executePreparedStatement(String sql, Object... params) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            for (int i = 0; i < params.length; i++) {
-                preparedStatement.setObject(i + 1, params[i]);
-            }
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static void addScreenshot(String path, String testCaseName) {
-        String sql = "INSERT INTO screenshot_paths (execution_id, test_case_name, path) VALUES (?, ?, ?)";
-        executePreparedStatement(sql, executionId, testCaseName, path);
     }
 
     public static void log(String message, String testCaseName) {
@@ -103,9 +50,30 @@ public class MiniLogger {
         }
     }
 
+    public static void addScreenshot(String path, String testCaseName) {
+        String sql = "INSERT INTO screenshot_paths (execution_id, test_case_name, path) VALUES (?, ?, ?)";
+        executePreparedStatement(sql, executionId, testCaseName, path);
+    }
+
     private static void addLogEntry(String message, String testCaseName, String logType) {
         String sql = "INSERT INTO test_logs (execution_id, test_case_name, message, log_type, timestamp) VALUES (?, ?, ?, ?, ?)";
         executePreparedStatement(sql, executionId, testCaseName, message, logType, createTimestamp());
+    }
+
+    private static void initializeExecution() {
+        String sql = "INSERT INTO executions (execution_id, test_suite, browser, environment, headless) VALUES (?, ?, ?, ?, ?)";
+        executePreparedStatement(sql, executionId, testSuite, browser, environment, headless);
+    }
+
+    private static void executePreparedStatement(String sql, Object... params) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
+                preparedStatement.setObject(i + 1, params[i]);
+            }
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static String createTimestamp() {
