@@ -40,6 +40,8 @@ public class InvalidLoginTestCase extends BaseTestCase {
         loginPage.clickLoginButton();
         log("Login button clicked successfully.");
 
+        Assert.fail("failed as expected");
+
         Assert.assertTrue(loginPage.getAlertElement().isDisplayed(), "Alert element not visible");
         pass("Failed to log-in as expected.");
     }
