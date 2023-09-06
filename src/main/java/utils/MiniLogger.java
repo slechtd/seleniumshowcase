@@ -22,6 +22,11 @@ public class MiniLogger {
 
     static {
         if (shouldLogToDB) {
+
+            System.out.println(PropertiesReader.getDbHost());
+            System.out.println(PropertiesReader.getDbUser());
+            System.out.println(PropertiesReader.getDbPassword());
+
             initializeDatabaseConnection();
         }
     }
