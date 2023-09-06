@@ -32,9 +32,16 @@ public class MiniLogger {
     }
 
     private static void initializeDatabaseConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("MySQL JDBC Driver not found.", e);
+        }
+
         String dbHost = PropertiesReader.getDbHost();
         String dbUser = PropertiesReader.getDbUser();
         String dbPassword = PropertiesReader.getDbPassword();
+
         try {
             connection = DriverManager.getConnection(dbHost, dbUser, dbPassword);
             initializeExecution();
