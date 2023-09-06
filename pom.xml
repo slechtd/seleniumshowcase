@@ -12,12 +12,14 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <!-- Default values for browser, environment, suiteXmlFile, and os -->
+    <!-- Default Environmental values -->
     <browser>chrome</browser>
     <environment>DEV</environment>
     <headless>false</headless>
     <suiteXmlFile>src/main/resources/testSuites/smoke-testng.xml</suiteXmlFile>
-    <!-- DB Properties -->
+    <!-- Toggle DB Logging -->
+    <logIntoDB>false</logIntoDB>
+    <!-- DB Properties. Leaver a placeholder here for security, pass real value in Jenkins -->
     <dbHost>placeholder</dbHost>
     <dbUser>placeholder</dbUser>
     <dbPassword>placeholder</dbPassword>
@@ -81,6 +83,7 @@
                     <browser>${browser}</browser>
                     <environment>${environment}</environment>
                     <headless>${headless}</headless>
+                    <logIntoDB>${logIntoDB}</logIntoDB>
                     <dbHost>${dbHost}</dbHost>
                     <dbUser>${dbUser}</dbUser>
                     <dbPassword>${dbPassword}</dbPassword>

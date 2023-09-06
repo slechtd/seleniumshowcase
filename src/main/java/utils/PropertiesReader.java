@@ -31,6 +31,11 @@ public class PropertiesReader {
         return "true".equalsIgnoreCase(headlessValue);
     }
 
+    public static boolean shouldLogIntoDB() {
+        String shouldLogValue = System.getProperty("logIntoDB");
+        return "true".equalsIgnoreCase(shouldLogValue);
+    }
+
     public static String getDbHost() {
         return System.getProperty("dbHost");
     }
