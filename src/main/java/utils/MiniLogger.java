@@ -39,7 +39,14 @@ public class MiniLogger {
             connection = DriverManager.getConnection(dbHost, dbUser, dbPassword);
             initializeExecution();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
+            System.err.println("Message: " + e.getMessage());
+            Throwable t = e.getCause();
+            while(t != null) {
+                System.err.println("Cause: " + t);
+                t = t.getCause();
+            }
             throw new RuntimeException("Failed to connect to database.");
         }
     }
