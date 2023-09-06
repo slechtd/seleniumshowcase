@@ -23,7 +23,6 @@ public class MiniLogger {
         if (shouldLogToDB) {
             connection = DatabaseConnector.getConnection();
             initializeExecution();
-            addLogEntry("XXX", "XXX", info);
         }
     }
 
@@ -66,7 +65,8 @@ public class MiniLogger {
         executePreparedStatement(sql, executionId, testSuite, browser, environment, headless);
     }
 
-    private static void executePreparedStatement(String sql, Object... params) {
+    //ORIGINAL:
+    /*private static void executePreparedStatement(String sql, Object... params) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
             for (int i = 0; i < params.length; i++) {
                 preparedStatement.setObject(i + 1, params[i]);
@@ -75,7 +75,26 @@ public class MiniLogger {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }*/
+
+    //DEBUG:
+    private static void executePreparedStatement(String sql, Object... params) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+            for (int i = 0; i < params.length; i++) {
+                preparedStatement.setObject(i + 1, params[i]);
+            }
+            System.out.println("Executing SQL: " + preparedStatement.toString()); // Debugging line
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println("Rows affected: " + rowsAffected);  // Debugging line
+            if (rowsAffected == 0) {
+                System.err.println("No rows affected, insert failed.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.err.println("SQLException occurred: " + e.getMessage());
+        }
     }
+
 
     private static String createTimestamp() {
         return new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss-SSS").format(new Date());
