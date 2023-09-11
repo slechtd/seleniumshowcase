@@ -28,6 +28,7 @@ public class BaseTestCase {
     @AfterTest
     protected void tearDown() {
         WebDriverFactory.cleanUpDriver();
+        MiniLogger.addExecutionEndTimestamp();
     }
 
     //SHARED TESTCASE METHODS

@@ -15,6 +15,7 @@ public class MiniLogger {
     private static final String browser = PropertiesReader.getBrowser();
     private static final String environment = PropertiesReader.getEnvironment();
     private static final boolean headless = PropertiesReader.isHeadless();
+    private static final String executionStartTimestamp = createTimestamp();
     private static final String info = "INFO";
     private static final String pass = "PASS";
     private static final String fail = "FAIL";
@@ -57,6 +58,12 @@ public class MiniLogger {
         executePreparedStatement(sql, executionId, testCaseName, path);
     }
 
+    public static void addExecutionEndTimestamp() {
+        String timestamp = createTimestamp();
+        String sql = "UPDATE executions SET executionEndTimestamp = ? WHERE execution_id = ?";
+        executePreparedStatement(sql, timestamp, executionId);
+    }
+
     // PRIVATE METHODS
 
     private static void addLogEntry(String message, String testCaseName, String logType) {
@@ -65,8 +72,8 @@ public class MiniLogger {
     }
 
     private static void initializeExecution() {
-        String sql = "INSERT INTO executions (execution_id, test_suite, browser, environment, headless) VALUES (?, ?, ?, ?, ?)";
-        executePreparedStatement(sql, executionId, testSuite, browser, environment, headless);
+        String sql = "INSERT INTO executions (execution_id, test_suite, browser, environment, headless, executionStartTimestamp) VALUES (?, ?, ?, ?, ?, ?)";
+        executePreparedStatement(sql, executionId, testSuite, browser, environment, headless, executionStartTimestamp);
     }
 
     private static void executePreparedStatement(String sql, Object... params) {
@@ -126,7 +133,9 @@ CREATE TABLE executions (
     test_suite VARCHAR(255),
     browser VARCHAR(50),
     environment VARCHAR(50),
-    headless BOOLEAN
+    headless BOOLEAN,
+    executionStartTimestamp DATETIME,
+    executionEndTimestamp DATETIME
 );
 
 CREATE TABLE screenshot_paths (
@@ -143,7 +152,7 @@ CREATE TABLE test_logs (
     test_case_name VARCHAR(255),
     message TEXT,
     log_type VARCHAR(50),
-    timestamp VARCHAR(50),
+    timestamp DATETIME,
     FOREIGN KEY (execution_id) REFERENCES executions(execution_id)
 );
 */
