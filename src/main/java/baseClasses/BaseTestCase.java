@@ -12,6 +12,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import utils.EnvironmentManager;
 import utils.MiniLogger;
+import utils.PropertiesReader;
 import utils.WebDriverFactory;
 
 import java.time.Duration;

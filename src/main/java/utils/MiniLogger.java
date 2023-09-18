@@ -54,14 +54,18 @@ public class MiniLogger {
     }
 
     public static void addScreenshot(String path, String testCaseName) {
-        String sql = "INSERT INTO screenshot_paths (execution_id, test_case_name, path) VALUES (?, ?, ?)";
-        executePreparedStatement(sql, executionId, testCaseName, path);
+        if (shouldLogToDB) {
+            String sql = "INSERT INTO screenshot_paths (execution_id, test_case_name, path) VALUES (?, ?, ?)";
+            executePreparedStatement(sql, executionId, testCaseName, path);
+        }
     }
 
     public static void addExecutionEndTimestamp() {
-        String timestamp = createTimestamp();
-        String sql = "UPDATE executions SET executionEndTimestamp = ? WHERE execution_id = ?";
-        executePreparedStatement(sql, timestamp, executionId);
+        if (shouldLogToDB) {
+            String timestamp = createTimestamp();
+            String sql = "UPDATE executions SET executionEndTimestamp = ? WHERE execution_id = ?";
+            executePreparedStatement(sql, timestamp, executionId);
+        }
     }
 
     // PRIVATE METHODS
