@@ -18,7 +18,7 @@ import java.util.List;
 public class LoginTestCase extends BaseTestCase {
 
     @Test
-    public void login() throws IOException, CsvException, InterruptedException {
+    public void login() throws IOException, CsvException {
 
         List<String[]> credentialsList = TestDataManager.getLoginCredentials();
 
@@ -50,7 +50,7 @@ public class LoginTestCase extends BaseTestCase {
             loginPage.clickLoginButton();
             log("Login button clicked successfully.");
 
-            if (Boolean.parseBoolean(isValid)) { // ZDE CHYBA ?
+            if (Boolean.parseBoolean(isValid)) {
 
                 MyAccountPageObject myAccountPage = new MyAccountPageObject();
                 waitForPageToBeLoaded(10);
