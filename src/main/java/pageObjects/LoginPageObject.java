@@ -12,11 +12,8 @@ public class LoginPageObject extends BasePageObject {
     // LOCATORS - not to be accessed directly, use getters bellow.
 
     private final By loginField = By.cssSelector("#loginFrm_loginname");
-
     private final By passwordField = By.cssSelector("#loginFrm_password");
-
     private final By loginButton = By.cssSelector("button[title='Login']");
-
     private final By alert = By.cssSelector(".alert.alert-danger.alert-error");
 
     // ELEMENT GETTERS - used when an element needs to be accessed within a TestCase, such as when calling waitForElementVisible().

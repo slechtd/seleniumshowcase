@@ -14,7 +14,6 @@ public class WebDriverFactory {
 
     private static final String baseDir = PropertiesReader.getUserDir();
     private static final String fileSeparator = PropertiesReader.getFileSeparator();
-
     public static final ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     public static WebDriver getDriver() {
@@ -60,19 +59,26 @@ public class WebDriverFactory {
 
     private static ChromeOptions getChromeOptions() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments(PropertiesReader.isHeadless() ? "--headless" : "--headed");
+        if (PropertiesReader.isHeadless()) {
+            options.addArguments("--headless");
+        }
         return options;
     }
 
+
     private static FirefoxOptions getFirefoxOptions() {
         FirefoxOptions options = new FirefoxOptions();
-        options.addArguments(PropertiesReader.isHeadless() ? "--headless" : "--headed");
+        if (PropertiesReader.isHeadless()) {
+            options.addArguments("--headless");
+        }
         return options;
     }
 
     private static EdgeOptions getEdgeOptions() {
         EdgeOptions options = new EdgeOptions();
-        options.addArguments(PropertiesReader.isHeadless() ? "--headless" : "--headed");
+        if (PropertiesReader.isHeadless()) {
+            options.addArguments("--headless");
+        }
         return options;
     }
 }
