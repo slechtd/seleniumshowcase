@@ -10,10 +10,10 @@ This is my portfolio project designed to showcase my approach to building a scal
 - Uses the Page Object Model. Common functionalities are abstracted away in base classes which test cases and page objects inherit from.
 - Test runs can be parametrised (desired browser, environment, test suite, etc..) using Maven properties.
 - Optimized for parallel or multithreaded test executions.
-- Handles advanced GUI interactions such as crolling to elements and hovering over elements.
+- Handles advanced GUI interactions such as scrolling to elements and hovering over elements.
 - Supports data-driven testing through Excel spreadsheets and is equipped for multi-environment testing.
-- Custom logging implementation, outputs into a database (see details bellow), supports visualisation ana analytics.
-- Automatically handles file sepparators ("/" vs "\") based on the OS.
+- Custom logging implementation, outputs into a database (see details bellow), supports visualisation and analytics.
+- Automatically handles file separators based on the OS.
 
 ### Prerequisites:
 
@@ -40,7 +40,7 @@ clean test -Dbrowser=edge -Denvironment=DEV -DsuiteXmlFile=src/main/resources/te
 Logging is handles trough the DBLogger class. A direct connection to a DB can be established. While running locally, database logging can be disabled by adjusting the logIntoDB property in pom.xml. While running in Jenkins, the dbHost, dbUser and dbPassword properties should not be stored in the pom.xml (keep the default placeholder values), but rather read values should be passed in Maven Goals in a buildstep.
 - Initially I used ExtentReports as a simple, ready-made solution.
 - Unsatisfied, I created by own logging tool (see repo [MiniLogger](https://github.com/slechtd/minilogger)) that produced JSON logs that can be consumed a visualised by a browser app, for example.
-- Finally, I decided to log dirrectly into a DB (see the DBLogger and DatabaseConnector classes) to enable advanced visualisation and analytics (such as Grafana).
+- Finally, I decided to log directly into a DB (see the DBLogger and DatabaseConnector classes) to enable advanced visualisation and analytics (such as Grafana).
 - Realistically speaking, a production-ready implementation of my framework could probably use both approaches - a simple logging (such as using ExtentReports) for an immediate feedback during test development, and DB logging for further test result gathering, visualisation and analysis.
 
 

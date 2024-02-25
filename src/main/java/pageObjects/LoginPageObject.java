@@ -11,15 +11,15 @@ public class LoginPageObject extends BasePageObject {
 
     // LOCATORS - not to be accessed directly, use getters bellow.
 
-    private final By loginField = By.cssSelector("#loginFrm_loginname");
+    private final By nameField = By.cssSelector("#loginFrm_loginname");
     private final By passwordField = By.cssSelector("#loginFrm_password");
     private final By loginButton = By.cssSelector("button[title='Login']");
     private final By alert = By.cssSelector(".alert.alert-danger.alert-error");
 
     // ELEMENT GETTERS - used when an element needs to be accessed within a TestCase, such as when calling waitForElementVisible().
 
-    public WebElement getLoginFieldElement() {
-        return driver.findElement(loginField);
+    public WebElement getNameFieldElement() {
+        return driver.findElement(nameField);
     }
 
     public WebElement getPasswordFieldElement() {
@@ -36,15 +36,17 @@ public class LoginPageObject extends BasePageObject {
 
     // PAGE METHODS - correspond to user actions on a given page. Called in a TestCase.
 
-    public void enterLogin(String value) {
-        driver.findElement(loginField).sendKeys(value);
+    public void enterName(String value) {
+        getNameFieldElement().clear();
+        getNameFieldElement().sendKeys(value);
     }
 
     public void enterPassword(String value) {
-        driver.findElement(passwordField).sendKeys(value);
+        getPasswordFieldElement().clear();
+        getPasswordFieldElement().sendKeys(value);
     }
 
     public void clickLoginButton() {
-        driver.findElement(loginButton).click();
+        getLoginButtonElement().click();
     }
 }
