@@ -17,29 +17,41 @@ import java.util.List;
 @Listeners(utils.Listeners.class)
 public class LoginTestCase extends BaseTestCase {
 
+    private HomePageObject homePage;
+    private LoginPageObject loginPage;
+
     @Test
     public void login() throws IOException, CsvException {
+        navigateToLoginPage();
+        enterCredentials();
+    }
 
-        List<String[]> credentialsList = TestDataManager.getLoginCredentials();
-
+    private void navigateToLoginPage() {
         log("Starting LoginTestCase");
 
-        HomePageObject homePage = new HomePageObject();
+        homePage = new HomePageObject();
         waitForPageToBeLoaded(10);
         log("HomePage loaded successfully.");
 
         homePage.clickLoginOrRegisterLink();
         log("loginOrRegisterLink clicked successfully.");
 
-        LoginPageObject loginPage = new LoginPageObject();
+        loginPage = new LoginPageObject();
         waitForPageToBeLoaded(10);
         log("LoginPage loaded successfully.");
+    }
+
+    private void enterCredentials() throws IOException, CsvException {
+        List<String[]> credentialsList = TestDataManager.getLoginCredentials();
 
         for (String[] credentialRow : credentialsList) {
 
             String name = credentialRow[0];
             String password = credentialRow[1];
             String isValid = credentialRow[2];
+
+            // Check for page loading before interacting with the page
+            waitForPageToBeLoaded(10);
 
             loginPage.enterName(name);
             log("Name entered successfully: " + name);
@@ -51,34 +63,38 @@ public class LoginTestCase extends BaseTestCase {
             log("Login button clicked successfully.");
 
             if (Boolean.parseBoolean(isValid)) {
-
-                MyAccountPageObject myAccountPage = new MyAccountPageObject();
-                waitForPageToBeLoaded(10);
-                Assert.assertTrue(myAccountPage.getMyAccountHeaderElement().isDisplayed(), "testCase");
-                log("MyAccountPage loaded successfully.");
-
-                hoverOverElement(myAccountPage.getWelcomeBackElement());
-                waitForElementVisible(myAccountPage.getDropdownMenuItems().get(0), 10);
-                log("DropDown menu is visible.");
-
-                myAccountPage.logOut();
-                log("Logout button clicked successfully.");
-
-                LogoutPageObject logoutPage = new LogoutPageObject();
-                waitForPageToBeLoaded(10);
-                log("LogoutPage loaded successfully.");
-
-                String actualHeaderText = logoutPage.getLogoutHeaderElement().getText();
-                String expectedHeaderText = "ACCOUNT LOGOUT";
-                Assert.assertEquals(actualHeaderText, expectedHeaderText, "The logout header text did not match.");
-                pass("Logout Successful.");
-
+                handleValidLogin();
             } else {
-
-                Assert.assertTrue(loginPage.getAlertElement().isDisplayed(), "Alert element is not visible");
-                pass("Failed to log-in as expected.");
-
+                handleInvalidLogin();
             }
         }
+    }
+
+    private void handleInvalidLogin() {
+        Assert.assertTrue(loginPage.getAlertElement().isDisplayed(), "Alert element is not visible");
+        pass("Failed to log-in as expected.");
+    }
+
+    private void handleValidLogin() {
+        MyAccountPageObject myAccountPage = new MyAccountPageObject();
+        waitForPageToBeLoaded(10);
+        Assert.assertTrue(myAccountPage.getMyAccountHeaderElement().isDisplayed(), "testCase");
+        log("MyAccountPage loaded successfully.");
+
+        hoverOverElement(myAccountPage.getWelcomeBackElement());
+        waitForElementVisible(myAccountPage.getDropdownMenuItems().get(0), 10);
+        log("DropDown menu is visible.");
+
+        myAccountPage.logOut();
+        log("Logout button clicked successfully.");
+
+        LogoutPageObject logoutPage = new LogoutPageObject();
+        waitForPageToBeLoaded(10);
+        log("LogoutPage loaded successfully.");
+
+        String actualHeaderText = logoutPage.getLogoutHeaderElement().getText();
+        String expectedHeaderText = "ACCOUNT LOGOUT";
+        Assert.assertEquals(actualHeaderText, expectedHeaderText, "The logout header text did not match.");
+        pass("Logout Successful.");
     }
 }
