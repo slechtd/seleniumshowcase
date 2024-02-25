@@ -16,9 +16,9 @@ public class Listeners implements ITestListener {
 
     public synchronized void onTestFailure(ITestResult result) {
         String testCase = result.getTestClass().getRealClass().getSimpleName();
-        MiniLogger.fail(result.getThrowable(), testCase);
+        DBLogger.fail(result.getThrowable(), testCase);
         String screenshotPath = ScreenshotManager.takeSnapShot();
-        MiniLogger.addScreenshot(screenshotPath, testCase);
+        DBLogger.addScreenshot(screenshotPath, testCase);
     }
 
     public synchronized void onFinish(ITestContext context) {

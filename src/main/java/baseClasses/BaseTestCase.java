@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import utils.EnvironmentManager;
-import utils.MiniLogger;
+import utils.DBLogger;
 import utils.WebDriverFactory;
 
 import java.time.Duration;
@@ -28,29 +28,29 @@ public class BaseTestCase {
     @AfterTest
     protected void tearDown() {
         WebDriverFactory.cleanUpDriver();
-        MiniLogger.addExecutionEndTimestamp();
+        DBLogger.addExecutionEndTimestamp();
     }
 
     //SHARED TESTCASE METHODS
 
     public void log(String message) {
         String testCaseName = getClass().getSimpleName();
-        MiniLogger.log(message, testCaseName);
+        DBLogger.log(message, testCaseName);
     }
 
     public void pass(String message) {
         String testCaseName = getClass().getSimpleName();
-        MiniLogger.pass(message, testCaseName);
+        DBLogger.pass(message, testCaseName);
     }
 
     public void fail(String message) {
         String testCaseName = getClass().getSimpleName();
-        MiniLogger.fail(message, testCaseName);
+        DBLogger.fail(message, testCaseName);
     }
 
     public void fail(Throwable throwable) {
         String testCaseName = getClass().getSimpleName();
-        MiniLogger.fail(throwable, testCaseName);
+        DBLogger.fail(throwable, testCaseName);
     }
 
     // SHARED ELEMENT METHODS

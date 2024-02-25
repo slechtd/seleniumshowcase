@@ -1,16 +1,27 @@
+
 ## Project Setup Guide
 
-### About
+### About:
 
-This is a portfolio project designed to showcase my approach to building a scalable and maintainable test automation framework. Developed in Java, the framework leverages Selenium WebDriver for browser automation and TestNG for test case management. The framework is optimized for parallel or multithreaded test executions, increasing efficiency and speed. Although the test cases are designed to run against the sample website automationteststore.com, the primary aim is not exhaustive testing of the site. Instead, the focus is on demonstrating a structured framework that adheres to the Page Object Model (POM) for enhanced reusability and maintainability. The framework supports data-driven testing through Excel spreadsheets and is equipped for multi-environment testing. Logging has been upgraded from Extent Reports to custom logging directly into a database. This change allows for real-time analytics and visualizations via Grafana, offering a more dynamic and interactive reporting experience.
+This is my portfolio project designed to showcase my approach to building a scalable and maintainable test automation framework using Java, Selenium Webdriver, TestNG, Maven and supporting dependencies. It uses [automationteststore.com](https://automationteststore.com/) as a sample web application.
 
-### Prerequisites
 
-- Java JDK 17
+### Key features:
+- Uses the Page Object Model. Common functionalities are abstracted away in base classes which test cases and page objects inherit from.
+- Test runs can be parametrised (desired browser, environment, test suite, etc..) using Maven properties.
+- Optimized for parallel or multithreaded test executions.
+- Handles advanced GUI interactions such as crolling to elements and hovering over elements.
+- Supports data-driven testing through Excel spreadsheets and is equipped for multi-environment testing.
+- Custom logging implementation, outputs into a database (see details bellow), supports visualisation ana analytics.
+- Automatically handles file sepparators ("/" vs "\") based on the OS.
+
+### Prerequisites:
+
+- JDK 17
 - Maven
 - A supported browser (Chrome, Edge, Firefox)
 
-### Setup to run locally
+### To run locally:
 
 1. Download drivers appropriate to your browser, browser version and OS
    - https://chromedriver.chromium.org/downloads
@@ -26,10 +37,14 @@ This is a portfolio project designed to showcase my approach to building a scala
 clean test -Dbrowser=edge -Denvironment=DEV -DsuiteXmlFile=src/main/resources/testSuites/full-testng.xml -Dheadless=false -DdbHost=placeholder -DdbUser=placeholder -DdbPassword=placeholder -DlogIntoDB=true
 
 ### Database logging:
+Logging is handles trough the DBLogger class. A direct connection to a DB can be established. While running locally, database logging can be disabled by adjusting the logIntoDB property in pom.xml. While running in Jenkins, the dbHost, dbUser and dbPassword properties should not be stored in the pom.xml (keep the default placeholder values), but rather read values should be passed in Maven Goals in a buildstep.
+- Initially I used ExtentReports as a simple, ready-made solution.
+- Unsatisfied, I created by own logging tool (see repo [MiniLogger](https://github.com/slechtd/minilogger)) that produced JSON logs that can be consumed a visualised by a browser app, for example.
+- Finally, I decided to log dirrectly into a DB (see the DBLogger and DatabaseConnector classes) to enable advanced visualisation and analytics (such as Grafana).
+- Realistically speaking, a production-ready implementation of my framework could probably use both approaches - a simple logging (such as using ExtentReports) for an immediate feedback during test development, and DB logging for further test result gathering, visualisation and analysis.
 
-Logging is handles trough the MiniLogger class. A direct connection to a DB can be established. While running locally, database logging can be disabled by adjusting the logIntoDB property in pom.xml. While running in Jenkins, the dbHost, dbUser and dbPassword properties should not be stored in the pom.xml (keep the default placeholder values), but rather read values should be passed in Maven Goals in a buildstep.
 
-### Targed DB schema for MiniLogger output:
+### Targed DB schema for DBLogger output:
 
 The output data can then be easily visualised and analysed in Grafana, PowerBI...
 
@@ -63,3 +78,6 @@ CREATE TABLE test_logs (
 );
 </pre>
 
+### Example Grafana dashboard using the output data:
+
+![Example Grafana Dashboard](GrafanaExample.png)

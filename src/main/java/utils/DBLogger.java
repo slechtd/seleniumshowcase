@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
-public class MiniLogger {
+public class DBLogger {
     private static final boolean shouldLogToDB = PropertiesReader.shouldLogIntoDB();
     private static final String executionId = UUID.randomUUID().toString();
     private static Connection connection;
