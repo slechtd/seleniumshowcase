@@ -11,9 +11,22 @@ This is my portfolio project designed to showcase my approach to building a scal
 - Test runs can be parametrised (desired browser, environment, test suite, etc..) using Maven properties.
 - Optimized for parallel or multithreaded test executions.
 - Handles advanced GUI interactions such as scrolling to elements and hovering over elements.
-- Supports data-driven testing through Excel spreadsheets and is equipped for multi-environment testing.
+- Supports data-driven testing through .csv files and is equipped for multi-environment testing.
 - Custom logging implementation, outputs into a database (see details bellow), supports visualisation and analytics.
 - Automatically handles file separators based on the OS.
+
+### Data-driven testing:
+
+Test cases based on filling out forms, checking input validation, etc. are written in a data-agnostic manner, meaning a data-driven approach is possible using .csv files as long as the general required format of the test data is maintained.
+
+<pre>
+rowNr,firstName,firstNameValid,email,emailValid,enquiry,enquiryValid
+1,Dan,true,dan.dan@dan.com,true,Lorem ipsu,true
+2,D,false,dan.dan@dan.com,true,Lorem ipsu,true
+3,Dan,true,dandandan.com,false,Lorem ipsu,true
+4,Dan,true,dan.dan@dan.com,true,Lo,false
+5,Dandandandandandandandandandandan,false,dan.dan@dan.com,true,Lorem ipsu,true
+</pre>
 
 ### Prerequisites:
 
@@ -42,7 +55,6 @@ Logging is handles trough the DBLogger class. A direct connection to a DB can be
 - Unsatisfied, I created by own logging tool (see repo [MiniLogger](https://github.com/slechtd/minilogger)) that produced JSON logs that can be consumed a visualised by a browser app, for example.
 - Finally, I decided to log directly into a DB (see the DBLogger and DatabaseConnector classes) to enable advanced visualisation and analytics (such as Grafana).
 - Realistically speaking, a production-ready implementation of my framework could probably use both approaches - a simple logging (such as using ExtentReports) for an immediate feedback during test development, and DB logging for further test result gathering, visualisation and analysis.
-
 
 ### Targed DB schema for DBLogger output:
 

@@ -4,6 +4,7 @@
     <test thread-count="2" name="Full Test">
         <classes>
             <class name="testCases.LoginTestCase"/>
+            <class name="testCases.ContactUsTestCase"/>
         </classes>
     </test>
 </suite>

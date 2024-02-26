@@ -49,7 +49,7 @@ public class WebDriverFactory {
                     throw new IllegalArgumentException("Invalid driver value found in config.properties: " + browser);
         };
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(3));
         return driver;
     }
 
