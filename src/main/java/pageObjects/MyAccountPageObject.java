@@ -11,6 +11,6 @@ public class MyAccountPageObject extends BasePageObject {
 
     // ELEMENT GETTERS - used when an element needs to be accessed within a TestCase, such as when calling waitForElementVisible().
     public WebElement getMyAccountHeaderElement() {
-        return getDriver().findElement(myAccountHeader);
+        return driver.findElement(myAccountHeader);
     }
 }

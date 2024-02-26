@@ -1,48 +1,51 @@
 package baseClasses;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import utils.WebDriverFactory;
 
 import java.util.List;
 
 public class BasePageObject {
-
-    protected static WebDriver getDriver() {
-        return WebDriverFactory.getDriver();
-    }
+    public final WebDriver driver = WebDriverFactory.getDriver();
 
     // LOCATORS - not to be accessed directly, use getters bellow.
 
     private final By loginOrRegisterLink = By.linkText("Login or register");
     private final By welcomeBackElement = By.cssSelector("#customer_menu_top .menu_text");
     private final By dropdownMenuItems = By.cssSelector("#customer_menu_top .sub_menu li");
+    private final By contactUsLink = By.linkText("Contact Us");
 
     // ELEMENT GETTERS - used when an element needs to be accessed within a TestCase, such as when calling waitForElementVisible().
 
     public WebElement getLoginOrRegisterLinkElement() {
-        return getDriver().findElement(loginOrRegisterLink);
+        return driver.findElement(loginOrRegisterLink);
     }
 
     public WebElement getWelcomeBackElement() {
-        return getDriver().findElement(welcomeBackElement);
+        return driver.findElement(welcomeBackElement);
     }
 
     public List<WebElement> getDropdownMenuItems() {
-        return getDriver().findElements(dropdownMenuItems);
+        return driver.findElements(dropdownMenuItems);
+    }
+
+    public WebElement getContactUsLinkElement(){
+        return driver.findElement(contactUsLink);
     }
 
     // PAGE METHODS - correspond to user actions on a given page. Called in a TestCase.
 
     public void clickLoginOrRegisterLink() {
-        getDriver().findElement(loginOrRegisterLink).click();
+        getLoginOrRegisterLinkElement().click();
     }
 
     public void logOut() {
         clickMenuItem(MenuItem.LOGOFF);
     }
 
+    public void clickContactUsLinkElement(){
+        getContactUsLinkElement().click();
+    }
 
     // PRIVATE METHODS - methods used by page methods
 
@@ -78,6 +81,14 @@ public class BasePageObject {
 
         public String getText() {
             return text;
+        }
+    }
+    public boolean isElementPresent(By locator) {
+        try {
+            WebElement element = driver.findElement(locator);
+            return element.isDisplayed();
+        } catch (NoSuchElementException | StaleElementReferenceException e) {
+            return false;
         }
     }
 }

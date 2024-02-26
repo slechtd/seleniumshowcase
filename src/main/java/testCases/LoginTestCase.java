@@ -17,18 +17,20 @@ import java.util.List;
 @Listeners(utils.Listeners.class)
 public class LoginTestCase extends BaseTestCase {
 
+    // PAGE OBJECTS
     private HomePageObject homePage;
     private LoginPageObject loginPage;
 
+    // TEST METHOD
     @Test
-    public void login() throws IOException, CsvException {
+    public void test() throws IOException, CsvException {
+        log("Starting LoginTestCase");
         navigateToLoginPage();
         enterCredentials();
     }
 
+    // PRIVATE METHODS
     private void navigateToLoginPage() {
-        log("Starting LoginTestCase");
-
         homePage = new HomePageObject();
         waitForPageToBeLoaded(10);
         log("HomePage loaded successfully.");
@@ -46,18 +48,16 @@ public class LoginTestCase extends BaseTestCase {
 
         for (String[] credentialRow : credentialsList) {
 
-            String name = credentialRow[0];
-            String password = credentialRow[1];
-            String isValid = credentialRow[2];
-
-            // Check for page loading before interacting with the page
-            waitForPageToBeLoaded(10);
+            String rowNr = credentialRow[0];
+            String name = credentialRow[1];
+            String password = credentialRow[2];
+            String isValid = credentialRow[3];
 
             loginPage.enterName(name);
-            log("Name entered successfully: " + name);
+            log("Successfully entered the name: " + name + " from row " + rowNr);
 
             loginPage.enterPassword(password);
-            log("Password entered successfully: " + password);
+            log("Successfully entered the password: " + password + " from row " + rowNr);
 
             loginPage.clickLoginButton();
             log("Login button clicked successfully.");
@@ -71,7 +71,7 @@ public class LoginTestCase extends BaseTestCase {
     }
 
     private void handleInvalidLogin() {
-        Assert.assertTrue(loginPage.getAlertElement().isDisplayed(), "Alert element is not visible");
+        Assert.assertTrue(loginPage.getAlertElement().isDisplayed(), "Alert element is visible");
         pass("Failed to log-in as expected.");
     }
 

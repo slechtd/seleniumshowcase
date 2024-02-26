@@ -6,7 +6,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class LogoutPageObject extends BasePageObject {
-    private final WebDriver driver = getDriver();
 
     // LOCATORS - not to be accessed directly, use getters bellow.
 

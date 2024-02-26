@@ -7,8 +7,6 @@ import org.openqa.selenium.WebElement;
 
 public class LoginPageObject extends BasePageObject {
 
-    private final WebDriver driver = getDriver();
-
     // LOCATORS - not to be accessed directly, use getters bellow.
 
     private final By nameField = By.cssSelector("#loginFrm_loginname");

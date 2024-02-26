@@ -16,7 +16,22 @@ public class TestDataManager {
     public static List<String[]> getLoginCredentials() throws IOException, CsvException {
         String csvFilePath = testDataDir + "loginCredentials.csv";
         try (CSVReader csvReader = new CSVReader(new FileReader(csvFilePath))) {
-            return csvReader.readAll();
+            List<String[]> allRows = csvReader.readAll();
+            if (!allRows.isEmpty()) {
+                allRows.remove(0);
+            }
+            return allRows;
+        }
+    }
+
+    public static List<String[]> contactUsInputs() throws IOException, CsvException {
+        String csvFilePath = testDataDir + "contactUsInputs.csv";
+        try (CSVReader csvReader = new CSVReader(new FileReader(csvFilePath))) {
+            List<String[]> allRows = csvReader.readAll();
+            if (!allRows.isEmpty()) {
+                allRows.remove(0);
+            }
+            return allRows;
         }
     }
 }
