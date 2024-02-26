@@ -1,2 +1,6 @@
 rowNr,firstName,firstNameValid,email,emailValid,enquiry,enquiryValid
 1,Dan,true,dan.dan@dan.com,true,Lorem ipsu,true
+2,D,false,dan.dan@dan.com,true,Lorem ipsu,true
+3,Dan,true,dandandan.com,false,Lorem ipsu,true
+4,Dan,true,dan.dan@dan.com,true,Lo,false
+5,Dandandandandandandandandandandan,false,dan.dan@dan.com,true,Lorem ipsu,true

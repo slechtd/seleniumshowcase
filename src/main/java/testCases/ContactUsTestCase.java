@@ -6,7 +6,6 @@ import org.testng.Assert;
 import pageObjects.ContactUsPageObject;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-import pageObjects.ContactUsSuccessPageObject;
 import pageObjects.HomePageObject;
 import utils.TestDataManager;
 
@@ -19,7 +18,6 @@ public class ContactUsTestCase extends BaseTestCase {
     // PAGE OBJECTS
     private HomePageObject homePage;
     private ContactUsPageObject contactUsPage;
-    private ContactUsSuccessPageObject contactUsSuccessPage;
 
     @Test
     public void test() throws IOException, CsvException {
@@ -72,48 +70,26 @@ public class ContactUsTestCase extends BaseTestCase {
 
     private void checkExpectedVsActualResults(int rowNr, boolean isFirstNameValid, boolean isEmailValid, boolean isEnquiryValid) {
 
-        if (!isFirstNameValid && !contactUsPage.isFirstNameErrorPresent()) {
-            Assert.fail("Missing alert for invalid firstName at row: " + rowNr);
-        } else if (isFirstNameValid && contactUsPage.isFirstNameErrorPresent()) {
-            Assert.fail("Unexpected alert with valid firstName at row: " + rowNr);
-        } else if (!isFirstNameValid && contactUsPage.isFirstNameErrorPresent()) {
-            log("Alert shown for invalid firstName at row: " + rowNr);
-        }  else if (isFirstNameValid && !contactUsPage.isFirstNameErrorPresent()) {
-            log("No alert shown for valid firstName at row: " + rowNr);
-        }
+        boolean isFirstNameErrorPresent = contactUsPage.isFirstNameErrorPresent();
+        boolean isEmailErrorPresent = contactUsPage.isEmailErrorPresent();
+        boolean isEnquiryErrorPresent = contactUsPage.isEnquiryErrorPresent();
 
-        if (!isEmailValid && !contactUsPage.isEmailErrorPresent()) {
-            Assert.fail("Missing alert for invalid email at row: " + rowNr);
-        } else if (isEmailValid && contactUsPage.isEmailErrorPresent()) {
-            Assert.fail("Unexpected alert with valid email at row: " + rowNr);
-        } else if (!isEmailValid && contactUsPage.isEmailErrorPresent()) {
-            log("Alert shown for invalid email at row: " + rowNr);
-        } else if (isEmailValid && !contactUsPage.isEmailErrorPresent()) {
-            log("No alert shown for valid email at row: " + rowNr);
-        }
-
-        if (!isEnquiryValid && !contactUsPage.isEnquiryErrorPresent()) {
-            Assert.fail("Missing alert for invalid enquiry at row: " + rowNr);
-        } else if (isEnquiryValid && contactUsPage.isEnquiryErrorPresent()) {
-            Assert.fail("Unexpected alert with valid enquiry at row: " + rowNr);
-        } else if (!isEnquiryValid && contactUsPage.isEnquiryErrorPresent()) {
-            log("Alert shown for invalid enquiry at row: " + rowNr);
-        } else if (isEnquiryValid && !contactUsPage.isEnquiryErrorPresent()) {
-            log("No alert shown for valid enquiry at row: " + rowNr);
-        }
+        checkAlert(isFirstNameValid, isFirstNameErrorPresent, "firstName", rowNr);
+        checkAlert(isEmailValid, isEmailErrorPresent, "email", rowNr);
+        checkAlert(isEnquiryValid, isEnquiryErrorPresent, "enquiry", rowNr);
 
         continueTest();
     }
 
+    @SuppressWarnings("ConstantConditions")
+    private void checkAlert(boolean isValid, boolean isErrorPresent, String fieldName, int rowNr) {
+        if (!isValid && !isErrorPresent) Assert.fail("Missing alert for invalid " + fieldName + " at row: " + rowNr);
+        else if (isValid && isErrorPresent) Assert.fail("Unexpected alert with valid " + fieldName + " at row: " + rowNr);
+        else if (!isValid && isErrorPresent) log("Alert shown for invalid " + fieldName + " at row: " + rowNr);
+        else if (isValid && !isErrorPresent) log("No alert shown for valid " + fieldName + " at row: " + rowNr);
+    }
+
     private void continueTest(){
-        contactUsSuccessPage = new ContactUsSuccessPageObject();
-        waitForPageToBeLoaded(10);
-        log("contactUsSuccessPage loaded successfully.");
-
-        waitForElementVisible(contactUsSuccessPage.getContinueButtonElement(), 10);
-        contactUsSuccessPage.clickContinueButton();
-        log("clickContinueButton clicked successfully.");
-
         homePage.clickContactUsLinkElement();
         log("contactUsLink clicked successfully.");
     }
