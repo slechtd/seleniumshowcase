@@ -10,14 +10,7 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/src/main/resources/testData/invalidLogincredentials.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/src/main/resources/testData/validLoginCredentials.csv">
+        <entry key="/src/main/resources/testData/loginCredentials.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
