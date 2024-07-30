@@ -75,8 +75,6 @@ seleniumshowcase/
 4. Check pom.xml for additional settings.
 5. Run src/main/resources/testSuites/full-testng.xml
 
-***
-
 ## Feature breakdown:
 
 ### Browser, environment and other settings:
