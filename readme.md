@@ -9,7 +9,7 @@ This is my portfolio project designed to showcase my approach to building a scal
 ### Key features:
 - Uses the Page Object Model. Common functionalities are abstracted away in base classes which test cases and page objects inherit from.
 - Test runs can be parametrised (desired browser, environment, test suite, etc..) using Maven properties.
-- Optimized for parallel or multithreaded test executions.
+- Enabled for parallel or multithreaded test executions.
 - Handles advanced GUI interactions such as scrolling to elements and hovering over elements.
 - Supports data-driven testing through .csv files and is equipped for multi-environment testing.
 - Custom logging implementation, outputs into a database (see details bellow), supports visualisation and analytics.
