@@ -111,7 +111,7 @@ rowNr,firstName,firstNameValid,email,emailValid,enquiry,enquiryValid
 ```
 
 ### Database logging and analytics:
-Logging is handles through the DBLogger class. A direct connection to a DB can be established. While running locally, database logging can be disabled by adjusting the logIntoDB property in pom.xml. While running in Jenkins, the dbHost, dbUser and dbPassword properties should not be stored in the pom.xml (keep the default placeholder values), but rather read values should be passed in Maven Goals in a buildstep.
+Logging is handled through the DBLogger class. A direct connection to a DB can be established. While running locally, database logging can be disabled by adjusting the logIntoDB property in pom.xml. While running in Jenkins on a machine with a DB, the dbHost, dbUser and dbPassword properties should not be stored in the pom.xml (keep the default placeholder values), but rather real values should be passed in Maven Goals in a buildstep.
 
 ### Targed DB schema for DBLogger output:
 

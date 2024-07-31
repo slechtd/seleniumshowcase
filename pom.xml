@@ -19,7 +19,7 @@
     <suiteXmlFile>src/main/resources/testSuites/smoke-testng.xml</suiteXmlFile>
     <!-- Toggle DB Logging -->
     <logIntoDB>false</logIntoDB>
-    <!-- DB Properties. Leaver a placeholder here for security, pass real value in Jenkins -->
+    <!-- DB Properties. Leaver a placeholder here for security, pass real value in Jenkins goal -->
     <dbHost>placeholder</dbHost>
     <dbUser>placeholder</dbUser>
     <dbPassword>placeholder</dbPassword>
@@ -52,13 +52,6 @@
         <groupId>commons-io</groupId>
         <artifactId>commons-io</artifactId>
         <version>2.13.0</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-    <dependency>
-        <groupId>com.google.code.gson</groupId>
-        <artifactId>gson</artifactId>
-        <version>2.10.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
